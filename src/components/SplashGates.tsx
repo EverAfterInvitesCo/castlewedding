@@ -58,6 +58,7 @@ export default function SplashGates({ onReveal }: SplashGatesProps) {
           ref={videoRef}
           className="absolute inset-0 w-full h-full object-cover z-0"
           autoPlay
+          loop={false}
           muted={!isPlaying}
           playsInline
           webkit-playsinline="true"
@@ -68,8 +69,8 @@ export default function SplashGates({ onReveal }: SplashGatesProps) {
             handleEnded();
           }}
         >
-          {/* Using the root-relative path for files in the public folder */}
-          <source src="/gates.mp4" type="video/mp4" />
+          {/* Explicitly including the repository name for GitHub Pages path resolution */}
+          <source src="/castlewedding/gates.mp4" type="video/mp4" />
         </video>
       )}
     </motion.div>
