@@ -45,21 +45,6 @@ export default function SplashGates({ onReveal }: SplashGatesProps) {
     onReveal();
   };
 
-  const getAssetUrl = (filename: string) => {
-    const path = window.location.pathname;
-    let dir = path;
-    if (!path.endsWith("/")) {
-      const lastPart = path.substring(path.lastIndexOf("/") + 1);
-      if (lastPart.includes(".")) {
-        dir = path.substring(0, path.lastIndexOf("/"));
-      }
-    }
-    if (!dir.endsWith("/")) {
-      dir += "/";
-    }
-    return `${dir}${filename}`;
-  };
-
   return (
     <motion.div 
       initial={{ opacity: 1 }}
@@ -83,7 +68,8 @@ export default function SplashGates({ onReveal }: SplashGatesProps) {
             handleEnded();
           }}
         >
-          <source src={getAssetUrl("gates.mp4")} type="video/mp4" />
+          {/* Using the root-relative path for files in the public folder */}
+          <source src="/gates.mp4" type="video/mp4" />
         </video>
       )}
     </motion.div>
