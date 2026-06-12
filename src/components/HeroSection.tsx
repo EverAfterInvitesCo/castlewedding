@@ -14,6 +14,15 @@ export default function HeroSection() {
     }
   };
 
+  // Safely resolve the asset path relative to the base URL (handles different trailing slash configurations)
+  const getAssetUrl = (filename: string) => {
+    const base = import.meta.env.BASE_URL || "./";
+    if (base.endsWith("/")) {
+      return `${base}${filename}`;
+    }
+    return `${base}/${filename}`;
+  };
+
   return (
     <section className="relative h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-[#2D2B28]">
       {/* Immersive Video/Poster background */}
@@ -32,8 +41,8 @@ export default function HeroSection() {
             setVideoError(true);
           }}
         >
-          <source src="Couple.mp4" type="video/mp4" />
-          <source src="couple.mp4" type="video/mp4" />
+          <source src={getAssetUrl("Couple.mp4")} type="video/mp4" />
+          <source src={getAssetUrl("couple.mp4")} type="video/mp4" />
         </video>
 
         {/* Sophisticated Dark/Champagne translucent overlay for high contrast text readability */}

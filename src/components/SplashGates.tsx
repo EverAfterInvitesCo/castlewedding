@@ -48,6 +48,15 @@ export default function SplashGates({ onReveal }: SplashGatesProps) {
     onReveal();
   };
 
+  // Safely resolve the asset path relative to the base URL (handles different trailing slash configurations)
+  const getAssetUrl = (filename: string) => {
+    const base = import.meta.env.BASE_URL || "./";
+    if (base.endsWith("/")) {
+      return `${base}${filename}`;
+    }
+    return `${base}/${filename}`;
+  };
+
   return (
     <motion.div 
       initial={{ opacity: 1 }}
@@ -73,7 +82,8 @@ export default function SplashGates({ onReveal }: SplashGatesProps) {
             handleEnded();
           }}
         >
-          <source src="gates.mp4" type="video/mp4" />
+          <source src={getAssetUrl("gates.mp4")} type="video/mp4" />
+          <source src={getAssetUrl("Gates.mp4")} type="video/mp4" />
         </video>
       )}
     </motion.div>
