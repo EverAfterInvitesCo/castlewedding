@@ -8,8 +8,8 @@ export default function AudioPlayer() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    // Correctly loading music.mp3 from the public folder
-    audioRef.current = new Audio("/music.mp3");
+    // Corrected path to include your project subfolder for GitHub Pages
+    audioRef.current = new Audio("/castlewedding/music.mp3");
     audioRef.current.loop = true;
     audioRef.current.volume = 0.5;
 
