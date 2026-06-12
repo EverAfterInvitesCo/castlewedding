@@ -14,13 +14,20 @@ export default function HeroSection() {
     }
   };
 
-  // Safely resolve the asset path relative to the base URL (handles different trailing slash configurations)
+  // Safely resolve the asset path relative to the active URL (handles all GitHub Pages subdirectories and slashes)
   const getAssetUrl = (filename: string) => {
-    const base = import.meta.env.BASE_URL || "./";
-    if (base.endsWith("/")) {
-      return `${base}${filename}`;
+    const path = window.location.pathname;
+    let dir = path;
+    if (!path.endsWith("/")) {
+      const lastPart = path.substring(path.lastIndexOf("/") + 1);
+      if (lastPart.includes(".")) {
+        dir = path.substring(0, path.lastIndexOf("/"));
+      }
     }
-    return `${base}/${filename}`;
+    if (!dir.endsWith("/")) {
+      dir += "/";
+    }
+    return `${dir}${filename}`;
   };
 
   return (
@@ -91,11 +98,11 @@ export default function HeroSection() {
           className="flex flex-col items-center"
         >
           <h2 className="font-script text-6xl md:text-7xl lg:text-8xl text-white font-normal drop-shadow-sm mb-2 select-none">
-            Farah & Omar
+            Farah and Omar
           </h2>
 
-          <h3 className="font-cinzel text-lg md:text-xl text-[#F3E8C1] tracking-[0.25em] font-normal leading-relaxed uppercase select-none mt-2">
-            Are Getting Married
+          <h3 className="font-cinzel text-md md:text-lg text-[#F3E8C1] tracking-[0.2em] font-normal leading-relaxed uppercase select-none mt-2 max-w-md">
+            Are getting married over it
           </h3>
 
           <div className="w-12 h-[1px] bg-[#C5A03E] my-4 opacity-60" />

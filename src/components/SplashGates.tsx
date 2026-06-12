@@ -48,13 +48,20 @@ export default function SplashGates({ onReveal }: SplashGatesProps) {
     onReveal();
   };
 
-  // Safely resolve the asset path relative to the base URL (handles different trailing slash configurations)
+  // Safely resolve the asset path relative to the active URL (handles all GitHub Pages subdirectories and slashes)
   const getAssetUrl = (filename: string) => {
-    const base = import.meta.env.BASE_URL || "./";
-    if (base.endsWith("/")) {
-      return `${base}${filename}`;
+    const path = window.location.pathname;
+    let dir = path;
+    if (!path.endsWith("/")) {
+      const lastPart = path.substring(path.lastIndexOf("/") + 1);
+      if (lastPart.includes(".")) {
+        dir = path.substring(0, path.lastIndexOf("/"));
+      }
     }
-    return `${base}/${filename}`;
+    if (!dir.endsWith("/")) {
+      dir += "/";
+    }
+    return `${dir}${filename}`;
   };
 
   return (
