@@ -1,0 +1,42 @@
+{
+  "entities": {
+    "RSVP": {
+      "title": "RSVP",
+      "description": "RSVP response from wedding guest",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "The name of the main guest" },
+        "email": { "type": "string", "description": "The email of the guest" },
+        "attending": { "type": "boolean", "description": "Whether the guest is attending" },
+        "guestsCount": { "type": "integer", "description": "Number of attendees in this party" },
+        "dietary": { "type": "string", "description": "Dietary requirements/notes" },
+        "message": { "type": "string", "description": "Well wishes or message to the couple" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Creation timestamp" }
+      },
+      "required": ["name", "attending", "guestsCount", "createdAt"]
+    },
+    "GuestPhoto": {
+      "title": "GuestPhoto",
+      "description": "A photo uploaded by a wedding guest",
+      "type": "object",
+      "properties": {
+        "uploaderName": { "type": "string", "description": "Name of the person who uploaded" },
+        "imageUri": { "type": "string", "description": "Base64 data URI of the photo" },
+        "caption": { "type": "string", "description": "Optional caption for the photo" },
+        "likes": { "type": "integer", "description": "Number of likes on this photo" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Upload timestamp" }
+      },
+      "required": ["uploaderName", "imageUri", "createdAt"]
+    }
+  },
+  "firestore": {
+    "rsvps/{rsvpId}": {
+      "schema": "RSVP",
+      "description": "Guest RSVPs"
+    },
+    "guestPhotos/{photoId}": {
+      "schema": "GuestPhoto",
+      "description": "Guest uploaded photos"
+    }
+  }
+}

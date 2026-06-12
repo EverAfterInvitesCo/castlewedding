@@ -1,0 +1,6 @@
+{
+  "name": "Farah & Omar Wedding Invitation",
+  "description": "An elegant, mobile-first digital wedding invitation and celebration website for Farah and Omar, with guest RSVPs, day-of timeline, and live cooperative photo board guest wall.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

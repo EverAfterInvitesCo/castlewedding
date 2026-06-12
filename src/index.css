@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-serif: "Playfair Display", Georgia, serif;
+  --font-script: "Alex Brush", cursive;
+  --font-cinzel: "Cinzel", serif;
+
+  --color-gold-light: #F4E8C1;
+  --color-gold: #C5A03E;
+  --color-gold-accent: #B08E35;
+  --color-gold-dark: #8E702D;
+  --color-champagne: #FAF6EE;
+  --color-cream: #FDFBF7;
+  --color-charcoal: #2A2825;
+}
+
+/* Custom fade scroll effects */
+@layer utilities {
+  .gold-gradient {
+    background: linear-gradient(135deg, #B08E35 0%, #D4AF37 30%, #F4E8C1 50%, #D4AF37 70%, #8E702D 100%);
+  }
+  .gold-text-gradient {
+    background: linear-gradient(135deg, #8E702D 0%, #D4AF37 50%, #8E702D 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+/* Custom scrollbar and smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #FDFBF7;
+}
+::-webkit-scrollbar-thumb {
+  background: #C5A03E;
+  border-radius: 3px;
+}
