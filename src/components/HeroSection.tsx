@@ -1,10 +1,7 @@
-import { useState, useRef } from "react";
 import { motion } from "motion/react";
 import { ChevronDown } from "lucide-react";
 
 export default function HeroSection() {
-  const videoRef = useRef<HTMLVideoElement>(null);
-
   const scrollToNext = () => {
     const nextSection = document.getElementById("date-countdown");
     if (nextSection) {
@@ -13,25 +10,23 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="relative h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-[#2D2B28]">
+    <section className="relative h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-black">
       {/* Immersive Video background */}
       <div className="absolute inset-0 z-0">
         <video
-          ref={videoRef}
           className="w-full h-full object-cover"
           autoPlay
           loop
           muted
           playsInline
         >
+          {/* Using the exact path to your file in the public folder */}
           <source src="/Couple.mp4" type="video/mp4" />
         </video>
 
-        {/* Overlays */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/30 to-[#FDFBF7]" />
       </div>
 
-      {/* Content */}
       <div className="relative z-10 text-center px-4 max-w-xl flex flex-col items-center">
         <motion.div 
           initial={{ opacity: 0, scale: 0.8 }}
@@ -51,36 +46,24 @@ export default function HeroSection() {
           <h2 className="font-script text-6xl md:text-7xl lg:text-8xl text-white font-normal drop-shadow-sm mb-2 select-none">
             Farah and Omar
           </h2>
-
           <h3 className="font-cinzel text-md md:text-lg text-[#F3E8C1] tracking-[0.2em] font-normal leading-relaxed uppercase select-none mt-2 max-w-md">
             Are getting married over it
           </h3>
-
           <div className="w-12 h-[1px] bg-[#C5A03E] my-4 opacity-60" />
-
           <p className="font-serif italic text-white/85 font-normal text-sm md:text-base max-w-xs drop-shadow-sm">
             Save the Date for our most beautiful chapter yet
           </p>
         </motion.div>
       </div>
 
-      {/* Scroll indicator */}
       <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.85 }}
-        transition={{ delay: 2.2, duration: 1 }}
         className="absolute bottom-10 z-10 flex flex-col items-center cursor-pointer select-none"
         onClick={scrollToNext}
       >
         <span className="font-cinzel text-[9px] tracking-[0.25em] text-[#C5A03E] uppercase font-semibold mb-2">
           Discover Celebration
         </span>
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-        >
-          <ChevronDown className="w-5 h-5 text-[#C5A03E]" />
-        </motion.div>
+        <ChevronDown className="w-5 h-5 text-[#C5A03E]" />
       </motion.div>
     </section>
   );
