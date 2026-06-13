@@ -63,8 +63,8 @@ export default function EventAndTimeline() {
               <div className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-[#C5A03E] shrink-0" />
                 <div>
-                  <p className="font-medium text-[#2A2825]">Nile View Lounge</p>
-                  <p className="text-sm text-gray-600">Zamalek, Cairo</p>
+                  <p className="font-medium text-[#2A2825]">Gatz</p>
+                  <p className="text-sm text-gray-600">New Cairo</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
