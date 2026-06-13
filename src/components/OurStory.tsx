@@ -11,7 +11,7 @@ const chapters = [
     date: "May 2023",
     subtitle: "From London to Cairo",
     description: "Over written notebooks, long evening walks along the Thames, and flights across oceans, their hearts grew inextricably linked. Together they scaled hills, tasted local bakeries, supported each other's career strides, and realized that home wasn't a static coordinate. Home was the vibrant streets of Zamalek and the warmth of the Nile breeze where they finally settled.",
-    image: "/blossoming.png",
+    image: "/couple.png",
   },
   {
     title: "The Cairo Promise",
