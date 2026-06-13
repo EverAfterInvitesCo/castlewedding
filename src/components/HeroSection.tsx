@@ -3,8 +3,6 @@ import { motion } from "motion/react";
 import { ChevronDown } from "lucide-react";
 
 export default function HeroSection() {
-  const [videoLoaded, setVideoLoaded] = useState(false);
-  const [videoError, setVideoError] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const scrollToNext = () => {
@@ -14,73 +12,27 @@ export default function HeroSection() {
     }
   };
 
-  // Safely resolve the asset path relative to the active URL (handles all GitHub Pages subdirectories and slashes)
-  const getAssetUrl = (filename: string) => {
-    const path = window.location.pathname;
-    let dir = path;
-    if (!path.endsWith("/")) {
-      const lastPart = path.substring(path.lastIndexOf("/") + 1);
-      if (lastPart.includes(".")) {
-        dir = path.substring(0, path.lastIndexOf("/"));
-      }
-    }
-    if (!dir.endsWith("/")) {
-      dir += "/";
-    }
-    return `${dir}${filename}`;
-  };
-
   return (
     <section className="relative h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-[#2D2B28]">
-      {/* Immersive Video/Poster background */}
+      {/* Immersive Video background */}
       <div className="absolute inset-0 z-0">
         <video
           ref={videoRef}
-          className="w-full h-full object-cover animate-fade-in"
+          className="w-full h-full object-cover"
           autoPlay
           loop
           muted
           playsInline
-          webkit-playsinline="true"
-          onLoadedData={() => setVideoLoaded(true)}
-          onError={() => {
-            console.warn("Couple video failed to load, launching artwork fallback.");
-            setVideoError(true);
-          }}
         >
-          <source src={getAssetUrl("Couple.mp4")} type="video/mp4" />
-          <source src={getAssetUrl("couple.mp4")} type="video/mp4" />
+          <source src="/Couple.mp4" type="video/mp4" />
         </video>
 
-        {/* Sophisticated Dark/Champagne translucent overlay for high contrast text readability */}
+        {/* Overlays */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/30 to-[#FDFBF7]" />
-        
-        {/* Watercolor overlay vignette */}
-        <div 
-          className="absolute inset-0 opacity-20 pointer-events-none mix-blend-overlay"
-          style={{
-            backgroundImage: `url('https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17?auto=format&fit=crop&q=80&w=1200')`,
-            backgroundSize: 'cover',
-          }}
-        />
-
-        {/* Art Backdrop Fallback if video isn't there */}
-        {(!videoLoaded || videoError) && (
-          <motion.div 
-            initial={{ scale: 1.05 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 10, ease: "easeOut", repeat: Infinity, repeatType: "reverse" }}
-            className="absolute inset-0 bg-cover bg-center"
-            style={{
-              backgroundImage: `url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=1200')`, // Elegant wedding scenery
-            }}
-          />
-        )}
       </div>
 
-      {/* Elegant content floating in front */}
+      {/* Content */}
       <div className="relative z-10 text-center px-4 max-w-xl flex flex-col items-center">
-        {/* Tiny Laurel Icon or Decorative Ornament */}
         <motion.div 
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -90,7 +42,6 @@ export default function HeroSection() {
           ❦
         </motion.div>
 
-        {/* Fancy Elegant Typography Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -113,7 +64,7 @@ export default function HeroSection() {
         </motion.div>
       </div>
 
-      {/* Elegant scroll down indicator at bottom */}
+      {/* Scroll indicator */}
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.85 }}
