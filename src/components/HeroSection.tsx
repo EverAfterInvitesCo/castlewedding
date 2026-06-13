@@ -26,8 +26,13 @@ export default function HeroSection() {
         <h2 className="font-script text-6xl md:text-7xl lg:text-8xl text-white font-normal drop-shadow-sm mb-2 select-none">
           Farah and Omar
         </h2>
-        {/* The text line has been removed from here */}
+        
+        <h3 className="font-cinzel text-md md:text-lg text-[#F3E8C1] tracking-[0.2em] font-normal leading-relaxed uppercase select-none mt-2 max-w-md">
+          Are getting married
+        </h3>
+
         <div className="w-12 h-[1px] bg-[#C5A03E] my-4 opacity-60" />
+        
         <p className="font-serif italic text-white/85 font-normal text-sm md:text-base max-w-xs drop-shadow-sm">
           Save the Date for our most beautiful chapter yet
         </p>
