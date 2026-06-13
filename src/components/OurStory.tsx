@@ -17,12 +17,12 @@ export default function OurStory() {
       image: "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&q=80&w=600",
     },
     {
-      title: "The Italian Promise",
-      date: "August 24, 2025",
-      subtitle: "Amalfi Coast Proposal",
-      description: "Under a blanket of twinkling stars on a private balcony overlooking the Amalfi sea, Omar bent down on one knee. With the sound of classical guitar floating in the warm sea breeze, he held out a simple gold ring. Through joyful tears and inexpressible happiness, Farah said yes — beginning their march to Forever.",
-      image: "https://images.unsplash.com/photo-1519225495810-7512c696505a?auto=format&fit=crop&q=80&w=600",
-    }
+  title: "The Cairo Promise",
+  date: "August 24, 2025",
+  subtitle: "A Sunset Proposal",
+  description: "Under a blanket of twinkling stars on a private balcony overlooking the shimmering Nile at the Nile Palace, Omar bent down on one knee...",
+  image: "/proposal.png", // Verify this matches the file in your public folder
+},
   ];
 
   const containerVariants = {
