@@ -8,6 +8,7 @@ import EventAndTimeline from "./components/EventAndTimeline";
 import CelebrationSchedule from "./components/CelebrationSchedule";
 import PhotoGallery from "./components/PhotoGallery";
 import RSVPForm from "./components/RSVPForm";
+import OrganizerPortal from "./components/OrganizerPortal";
 import AudioPlayer from "./components/AudioPlayer";
 
 export default function App() {
@@ -34,6 +35,7 @@ export default function App() {
               <CelebrationSchedule />
               <PhotoGallery />
               <RSVPForm />
+              <OrganizerPortal />
             </main>
             <AudioPlayer />
           </motion.div>
