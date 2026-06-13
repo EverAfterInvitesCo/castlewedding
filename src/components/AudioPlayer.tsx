@@ -1,101 +1,35 @@
-import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { useState, useRef, useEffect } from "react";
 import { Volume2, VolumeX } from "lucide-react";
 
 export default function AudioPlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
-  const [showTooltip, setShowTooltip] = useState(true);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  useEffect(() => {
-    // Correctly reference the music.mp3 file from the public root directory
-    audioRef.current = new Audio("/music.mp3");
-    audioRef.current.loop = true;
-    audioRef.current.volume = 0.5; // Increased volume slightly for better audibility
-
-    const timer = setTimeout(() => {
-      setShowTooltip(false);
-    }, 6000);
-
-    return () => {
-      clearTimeout(timer);
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current = null;
-      }
-    };
-  }, []);
-
-  const togglePlayback = () => {
+  const togglePlay = () => {
     if (audioRef.current) {
       if (isPlaying) {
         audioRef.current.pause();
-        setIsPlaying(false);
       } else {
-        // Modern browsers block autoplay; interaction is required
-        audioRef.current.play()
-          .then(() => {
-            setIsPlaying(true);
-            setShowTooltip(false);
-          })
-          .catch((err) => {
-            console.error("Playback failed:", err);
-          });
+        audioRef.current.play().catch(e => console.log("Playback prevented:", e));
       }
+      setIsPlaying(!isPlaying);
     }
   };
 
   return (
-    <div className="fixed bottom-6 left-6 z-40 flex items-center gap-3">
-      {/* Sound Waves animation */}
-      <AnimatePresence>
-        {isPlaying && (
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            className="flex items-end gap-0.5 h-4 px-2 pb-0.5 border border-[#C5A03E]/20 bg-[#FDFBF7]/85 backdrop-blur-[2px] rounded-full"
-          >
-            {[0.4, 0.9, 0.5, 0.8, 0.3, 0.7].map((height, i) => (
-              <motion.div 
-                key={i}
-                animate={{ height: [`${height * 100}%`, "10%", `${height * 100}%`] }}
-                transition={{ repeat: Infinity, duration: 1.2 + i * 0.15, ease: "easeInOut" }}
-                className="w-0.5 bg-[#C5A03E] rounded-full"
-              />
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      <div className="relative">
-        {/* Tooltip inviting them to listen */}
-        <AnimatePresence>
-          {showTooltip && (
-            <motion.div
-              initial={{ opacity: 0, x: -15 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -10 }}
-              transition={{ delay: 1 }}
-              className="absolute left-14 top-1/2 -translate-y-1/2 bg-white border border-[#EFE3C3] text-[#8E702D] text-[10px] tracking-wider uppercase font-cinzel w-36 px-3 py-2 rounded shadow-md pointer-events-none whitespace-normal leading-normal"
-            >
-              Tap to play our song
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Music Action Button */}
-        <motion.button
-          onClick={togglePlayback}
-          className={`w-11 h-11 rounded-full border flex items-center justify-center shadow-lg transition-all duration-300 ${
-            isPlaying
-              ? 'border-[#C5A03E] bg-[#FAF6EE] text-[#8E702D]'
-              : 'border-gray-200 bg-[#FDFBF7] text-gray-400'
-          }`}
-        >
-          {isPlaying ? <Volume2 className="w-4.5 h-4.5" /> : <VolumeX className="w-4.5 h-4.5" />}
-        </motion.button>
-      </div>
+    <div className="fixed bottom-6 left-6 z-[60]">
+      <audio
+        ref={audioRef}
+        loop
+        src="/castlewedding/music.mp3"
+      />
+      <button
+        onClick={togglePlay}
+        className="bg-white/10 backdrop-blur-md p-3 rounded-full border border-white/20 text-white hover:bg-white/20 transition-all"
+        aria-label="Toggle Audio"
+      >
+        {isPlaying ? <Volume2 size={20} /> : <VolumeX size={20} />}
+      </button>
     </div>
   );
 }
