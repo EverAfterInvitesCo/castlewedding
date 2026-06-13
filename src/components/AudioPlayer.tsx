@@ -8,12 +8,11 @@ export default function AudioPlayer() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    // Initialize with your custom music file from the public folder
+    // Correctly reference the music.mp3 file from the public root directory
     audioRef.current = new Audio("/music.mp3");
     audioRef.current.loop = true;
-    audioRef.current.volume = 0.28;
+    audioRef.current.volume = 0.5; // Increased volume slightly for better audibility
 
-    // Display tooltip for 6 seconds then fade out
     const timer = setTimeout(() => {
       setShowTooltip(false);
     }, 6000);
@@ -33,13 +32,14 @@ export default function AudioPlayer() {
         audioRef.current.pause();
         setIsPlaying(false);
       } else {
+        // Modern browsers block autoplay; interaction is required
         audioRef.current.play()
           .then(() => {
             setIsPlaying(true);
             setShowTooltip(false);
           })
           .catch((err) => {
-            console.log("Playback failed or was blocked by browser policies", err);
+            console.error("Playback failed:", err);
           });
       }
     }
@@ -79,8 +79,6 @@ export default function AudioPlayer() {
               transition={{ delay: 1 }}
               className="absolute left-14 top-1/2 -translate-y-1/2 bg-white border border-[#EFE3C3] text-[#8E702D] text-[10px] tracking-wider uppercase font-cinzel w-36 px-3 py-2 rounded shadow-md pointer-events-none whitespace-normal leading-normal"
             >
-              <div className="absolute right-full top-1/2 -translate-y-1/2 border-[5px] border-transparent border-r-white z-10" />
-              <div className="absolute right-full top-1/2 -translate-y-1/2 border-[6px] border-transparent border-r-[#EFE3C3]" />
               Tap to play our song
             </motion.div>
           )}
@@ -89,12 +87,10 @@ export default function AudioPlayer() {
         {/* Music Action Button */}
         <motion.button
           onClick={togglePlayback}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
-          className={`w-11 h-11 rounded-full border flex items-center justify-center shadow-lg transition-all duration-300 pointer-events-auto cursor-pointer focus:outline-none ${
+          className={`w-11 h-11 rounded-full border flex items-center justify-center shadow-lg transition-all duration-300 ${
             isPlaying
               ? 'border-[#C5A03E] bg-[#FAF6EE] text-[#8E702D]'
-              : 'border-gray-200 bg-[#FDFBF7] text-gray-400 hover:border-[#C5A03E]/50'
+              : 'border-gray-200 bg-[#FDFBF7] text-gray-400'
           }`}
         >
           {isPlaying ? <Volume2 className="w-4.5 h-4.5" /> : <VolumeX className="w-4.5 h-4.5" />}
