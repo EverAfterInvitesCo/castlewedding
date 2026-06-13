@@ -20,8 +20,8 @@ export default function HeroSection() {
           muted
           playsInline
         >
-          {/* Using the exact path to your file in the public folder */}
-          <source src="/Couple.mp4" type="video/mp4" />
+          {/* Corrected path for GitHub Pages subfolder deployment */}
+          <source src="/castlewedding/Couple.mp4" type="video/mp4" />
         </video>
 
         <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/30 to-[#FDFBF7]" />
