@@ -1,4 +1,4 @@
-import { MapPin, Calendar, Clock, Shirt } from "lucide-react";
+import { MapPin, Calendar, Shirt } from "lucide-react";
 
 export default function EventAndTimeline() {
   return (
@@ -38,14 +38,19 @@ export default function EventAndTimeline() {
                 </div>
               </div>
             </div>
-            <button className="mt-8 w-full py-3 border border-[#C5A03E] text-[#8E702D] hover:bg-[#C5A03E] hover:text-white transition-colors text-sm uppercase tracking-wider">
+            <a 
+              href="https://maps.app.goo.gl/FszJt6Duzjihn3AJA" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="mt-8 block w-full py-3 border border-[#C5A03E] text-[#8E702D] hover:bg-[#C5A03E] hover:text-white transition-colors text-center text-sm uppercase tracking-wider"
+            >
               View Location Map
-            </button>
+            </a>
           </div>
 
-          {/* Reception Card */}
+          {/* Outing Card */}
           <div className="p-8 border border-[#EFE3C3] bg-white shadow-sm hover:shadow-md transition-shadow">
-            <h3 className="font-serif text-2xl text-[#2A2825] mb-6">The Grand Reception</h3>
+            <h3 className="font-serif text-2xl text-[#2A2825] mb-6">The Outing</h3>
             <div className="space-y-4 text-left">
               <div className="flex items-start gap-3">
                 <Calendar className="w-5 h-5 text-[#C5A03E] shrink-0" />
@@ -57,7 +62,7 @@ export default function EventAndTimeline() {
               <div className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-[#C5A03E] shrink-0" />
                 <div>
-                  <p className="font-medium text-[#2A2825]">The Nile Palace</p>
+                  <p className="font-medium text-[#2A2825]">Nile View Lounge</p>
                   <p className="text-sm text-gray-600">Zamalek, Cairo</p>
                 </div>
               </div>
@@ -65,13 +70,18 @@ export default function EventAndTimeline() {
                 <Shirt className="w-5 h-5 text-[#C5A03E] shrink-0" />
                 <div>
                   <p className="font-medium text-[#2A2825]">Attire Guidelines</p>
-                  <p className="text-sm text-gray-600">Formal Black Tie / Elegant Tuxedos & Floor-length Gowns (Champagne and pastel theme)</p>
+                  <p className="text-sm text-gray-600">Very casual, chill clothes. Bring your best dance moves with you!</p>
                 </div>
               </div>
             </div>
-            <button className="mt-8 w-full py-3 border border-[#C5A03E] text-[#8E702D] hover:bg-[#C5A03E] hover:text-white transition-colors text-sm uppercase tracking-wider">
+            <a 
+              href="https://maps.app.goo.gl/rjZ37wcap2cdDBRC8" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="mt-8 block w-full py-3 border border-[#C5A03E] text-[#8E702D] hover:bg-[#C5A03E] hover:text-white transition-colors text-center text-sm uppercase tracking-wider"
+            >
               View Location Map
-            </button>
+            </a>
           </div>
         </div>
       </div>
