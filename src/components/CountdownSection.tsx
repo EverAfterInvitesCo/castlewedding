@@ -120,8 +120,8 @@ export default function CountdownSection() {
           <div className="bg-white/50 backdrop-blur-sm border border-[#EFE3C3] p-6 rounded flex flex-col items-center">
             <MapPin className="w-6 h-6 text-[#C5A03E] mb-3" />
             <span className="font-cinzel text-xs tracking-wider uppercase text-gray-500 mb-1">Venue</span>
-            <span className="font-serif text-base font-semibold text-[#2A2825] px-1 line-clamp-1 block">Grand Plaza Mansion</span>
-            <span className="text-xs text-gray-400 mt-1">Beverly Hills, CA</span>
+            <span className="font-serif text-base font-semibold text-[#2A2825] px-1 line-clamp-1 block">The Nile Palace</span>
+            <span className="text-xs text-gray-400 mt-1">Zamalek,Cairo</span>
           </div>
         </motion.div>
 
