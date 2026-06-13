@@ -20,7 +20,7 @@ export default function OurStory() {
       title: "The Cairo Promise",
       date: "August 24, 2025",
       subtitle: "A Sunset Proposal",
-      description: "Under a blanket of twinkling stars on a private balcony overlooking the shimmering Nile, Omar bent down on one knee. With the gentle sound of the city fading into the night and a warm breeze coming off the river, he held out a simple gold ring. Through joyful tears and inexpressible happiness, Farah said yes — beginning their march to Forever.",
+      description: "Under a blanket of twinkling stars on a private balcony overlooking the shimmering Nile at the Nile Palace, Omar bent down on one knee. With the gentle sound of the city fading into the night and a warm breeze coming off the river, he held out a simple gold ring. Through joyful tears and inexpressible happiness, Farah said yes — beginning their march to Forever.",
       image: "https://images.unsplash.com/photo-1519225495810-7512c696505a?auto=format&fit=crop&q=80&w=600",
     }
   ];
