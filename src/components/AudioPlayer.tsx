@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Music, Volume2, VolumeX } from "lucide-react";
+import { Volume2, VolumeX } from "lucide-react";
 
 export default function AudioPlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -8,10 +8,10 @@ export default function AudioPlayer() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    // Royalty-free background piano loop (romantic, soft, celestial instrumental)
-    audioRef.current = new Audio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-12.mp3");
+    // Initialize with your custom music file from the public folder
+    audioRef.current = new Audio("/music.mp3");
     audioRef.current.loop = true;
-    audioRef.current.volume = 0.28; // set soft background ambient level
+    audioRef.current.volume = 0.28;
 
     // Display tooltip for 6 seconds then fade out
     const timer = setTimeout(() => {
@@ -22,6 +22,7 @@ export default function AudioPlayer() {
       clearTimeout(timer);
       if (audioRef.current) {
         audioRef.current.pause();
+        audioRef.current = null;
       }
     };
   }, []);
@@ -80,7 +81,7 @@ export default function AudioPlayer() {
             >
               <div className="absolute right-full top-1/2 -translate-y-1/2 border-[5px] border-transparent border-r-white z-10" />
               <div className="absolute right-full top-1/2 -translate-y-1/2 border-[6px] border-transparent border-r-[#EFE3C3]" />
-              Tap to play soft piano music
+              Tap to play our song
             </motion.div>
           )}
         </AnimatePresence>
