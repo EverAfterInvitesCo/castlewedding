@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { doc, getDocFromServer } from "firebase/firestore";
-import { db } from "./firebase";
-
 import SplashGates from "./components/SplashGates";
 import HeroSection from "./components/HeroSection";
 import CountdownSection from "./components/CountdownSection";
@@ -16,17 +13,6 @@ import AudioPlayer from "./components/AudioPlayer";
 export default function App() {
   const [hasRevealed, setHasRevealed] = useState(false);
 
-  useEffect(() => {
-    async function testConnection() {
-      try {
-        await getDocFromServer(doc(db, "test", "connection"));
-      } catch (error) {
-        console.log("Firestore check completed.");
-      }
-    }
-    testConnection();
-  }, []);
-
   return (
     <div className="min-h-screen bg-[#FDFBF7] text-[#2A2825] font-sans overflow-x-hidden selection:bg-[#C5A03E]/20 text-center">
       <AnimatePresence mode="wait">
@@ -38,9 +24,12 @@ export default function App() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1.0 }}
-            className="flex flex-col relative"
           >
-            <main className="flex-1 w-full flex flex-col">
+            <header className="absolute top-0 left-0 right-0 z-30 h-24 flex items-center justify-between px-6 md:px-12 pointer-events-none">
+              <div className="font-cinzel text-sm tracking-[0.3em] font-bold text-white/90">F & O</div>
+            </header>
+
+            <main>
               <HeroSection />
               <CountdownSection />
               <OurStory />
@@ -49,6 +38,7 @@ export default function App() {
               <PhotoGallery />
               <RSVPForm />
             </main>
+            
             <AudioPlayer />
           </motion.div>
         )}
