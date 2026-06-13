@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import { useState, useRef } from "react";
 import { motion } from "motion/react";
 
 interface SplashGatesProps {
@@ -6,42 +6,21 @@ interface SplashGatesProps {
 }
 
 export default function SplashGates({ onReveal }: SplashGatesProps) {
-  const [isPlaying, setIsPlaying] = useState(false);
   const [videoError, setVideoError] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const fallbackTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const handleTapToPlay = () => {
-    if (isPlaying) return;
-    setIsPlaying(true);
-    
+  const handleVideoInteraction = () => {
+    // When the user clicks anywhere, attempt to play
     if (videoRef.current) {
-      videoRef.current.muted = false;
-      videoRef.current.currentTime = 0;
+      videoRef.current.muted = false; // Enable sound on click
       videoRef.current.play().catch((err) => {
-        console.warn("Unmuted play blocked. Attempting muted.", err);
-        if (videoRef.current) {
-          videoRef.current.muted = true;
-          videoRef.current.play().catch((playErr) => {
-            console.error("Muted playback failed:", playErr);
-            handleEnded();
-          });
-        }
+        console.warn("Playback failed:", err);
       });
     }
-
-    fallbackTimeoutRef.current = setTimeout(() => {
-      handleEnded();
-    }, 15000);
   };
 
   const handleEnded = () => {
-    if (fallbackTimeoutRef.current) {
-      clearTimeout(fallbackTimeoutRef.current);
-    }
-    if (videoRef.current) {
-      videoRef.current.pause();
-    }
+    // This is called when the video finishes
     onReveal();
   };
 
@@ -50,27 +29,28 @@ export default function SplashGates({ onReveal }: SplashGatesProps) {
       initial={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 1.0, ease: "easeInOut" }}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black overflow-hidden cursor-pointer select-none"
-      onClick={handleTapToPlay}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black cursor-pointer"
+      onClick={handleVideoInteraction}
     >
-      {!videoError && (
+      {!videoError ? (
         <video
           ref={videoRef}
-          className="absolute inset-0 w-full h-full object-cover z-0"
+          className="w-full h-full object-cover"
           autoPlay
-          muted={!isPlaying}
+          muted // Must be muted to autoplay in most browsers
           playsInline
-          webkit-playsinline="true"
           onEnded={handleEnded}
-          onError={(e) => {
-            console.error("Video load failed.", e);
+          onError={() => {
+            console.error("Video failed to load.");
             setVideoError(true);
-            handleEnded();
+            onReveal(); // If video fails, reveal site anyway
           }}
         >
-          {/* Using the root-relative path for files in the public folder */}
           <source src="/gates.mp4" type="video/mp4" />
         </video>
+      ) : (
+        // Fallback if video fails to load
+        <div className="text-white">Loading...</div>
       )}
     </motion.div>
   );
