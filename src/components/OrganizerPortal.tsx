@@ -38,7 +38,7 @@ export default function OrganizerDashboard({
   const [tempUrl, setTempUrl] = useState(uploadUrl);
   const [showSaveSuccess, setShowSaveSuccess] = useState(false);
 
-    // Sync temp input when outer state updates
+  // Sync temp input when outer state updates
   useEffect(() => {
     setTempUrl(uploadUrl);
   }, [uploadUrl]);
