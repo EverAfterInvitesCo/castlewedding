@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Volume2, VolumeX } from "lucide-react";
+import { Music, Volume2, VolumeX } from "lucide-react";
 
 export default function AudioPlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -8,11 +8,12 @@ export default function AudioPlayer() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    // Corrected path to include your project subfolder for GitHub Pages
-    audioRef.current = new Audio("/castlewedding/music.mp3");
+    // Royalty-free background piano loop (romantic, soft, celestial instrumental)
+    audioRef.current = new Audio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-12.mp3");
     audioRef.current.loop = true;
-    audioRef.current.volume = 0.5;
+    audioRef.current.volume = 0.28; // set soft background ambient level
 
+    // Display tooltip for 6 seconds then fade out
     const timer = setTimeout(() => {
       setShowTooltip(false);
     }, 6000);
@@ -21,7 +22,6 @@ export default function AudioPlayer() {
       clearTimeout(timer);
       if (audioRef.current) {
         audioRef.current.pause();
-        audioRef.current = null;
       }
     };
   }, []);
@@ -38,7 +38,7 @@ export default function AudioPlayer() {
             setShowTooltip(false);
           })
           .catch((err) => {
-            console.log("Playback failed or blocked:", err);
+            console.log("Playback failed or was blocked by browser policies", err);
           });
       }
     }
@@ -68,7 +68,7 @@ export default function AudioPlayer() {
       </AnimatePresence>
 
       <div className="relative">
-        {/* Tooltip */}
+        {/* Tooltip inviting them to listen */}
         <AnimatePresence>
           {showTooltip && (
             <motion.div
@@ -79,7 +79,8 @@ export default function AudioPlayer() {
               className="absolute left-14 top-1/2 -translate-y-1/2 bg-white border border-[#EFE3C3] text-[#8E702D] text-[10px] tracking-wider uppercase font-cinzel w-36 px-3 py-2 rounded shadow-md pointer-events-none whitespace-normal leading-normal"
             >
               <div className="absolute right-full top-1/2 -translate-y-1/2 border-[5px] border-transparent border-r-white z-10" />
-              Tap to play music
+              <div className="absolute right-full top-1/2 -translate-y-1/2 border-[6px] border-transparent border-r-[#EFE3C3]" />
+              Tap to play soft piano music
             </motion.div>
           )}
         </AnimatePresence>

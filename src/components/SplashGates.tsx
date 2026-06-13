@@ -15,11 +15,13 @@ export default function SplashGates({ onReveal }: SplashGatesProps) {
     if (isPlaying) return;
     setIsPlaying(true);
     
+    // Unmute, reset to the starting frame, disable looping, and play the entry video
     if (videoRef.current) {
+      videoRef.current.loop = false;
       videoRef.current.muted = false;
       videoRef.current.currentTime = 0;
       videoRef.current.play().catch((err) => {
-        console.warn("Unmuted play blocked. Attempting muted.", err);
+        console.warn("Unmuted play blocked by browser. Attempting muted play.", err);
         if (videoRef.current) {
           videoRef.current.muted = true;
           videoRef.current.play().catch((playErr) => {
@@ -30,6 +32,7 @@ export default function SplashGates({ onReveal }: SplashGatesProps) {
       });
     }
 
+    // Safety timeout: automatically transition after 15 seconds if the video gets stuck or is blocked
     fallbackTimeoutRef.current = setTimeout(() => {
       handleEnded();
     }, 15000);
@@ -45,6 +48,22 @@ export default function SplashGates({ onReveal }: SplashGatesProps) {
     onReveal();
   };
 
+  // Safely resolve the asset path relative to the active URL (handles all GitHub Pages subdirectories and slashes)
+  const getAssetUrl = (filename: string) => {
+    const path = window.location.pathname;
+    let dir = path;
+    if (!path.endsWith("/")) {
+      const lastPart = path.substring(path.lastIndexOf("/") + 1);
+      if (lastPart.includes(".")) {
+        dir = path.substring(0, path.lastIndexOf("/"));
+      }
+    }
+    if (!dir.endsWith("/")) {
+      dir += "/";
+    }
+    return `${dir}${filename}`;
+  };
+
   return (
     <motion.div 
       initial={{ opacity: 1 }}
@@ -53,24 +72,25 @@ export default function SplashGates({ onReveal }: SplashGatesProps) {
       className="fixed inset-0 z-50 flex items-center justify-center bg-black overflow-hidden cursor-pointer select-none"
       onClick={handleTapToPlay}
     >
+      {/* Immersive Entry Background Video (gates.mp4) */}
       {!videoError && (
         <video
           ref={videoRef}
           className="absolute inset-0 w-full h-full object-cover z-0"
           autoPlay
-          loop={false}
+          loop={!isPlaying}
           muted={!isPlaying}
           playsInline
           webkit-playsinline="true"
           onEnded={handleEnded}
           onError={(e) => {
-            console.error("Video load failed.", e);
+            console.error("Gates video load failed. Highlighting fallback transitioning.", e);
             setVideoError(true);
             handleEnded();
           }}
         >
-          {/* Explicitly including the repository name for GitHub Pages path resolution */}
-          <source src="/castlewedding/gates.mp4" type="video/mp4" />
+          <source src={getAssetUrl("gates.mp4")} type="video/mp4" />
+          <source src={getAssetUrl("Gates.mp4")} type="video/mp4" />
         </video>
       )}
     </motion.div>

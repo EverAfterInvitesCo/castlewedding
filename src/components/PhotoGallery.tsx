@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Heart, Camera, Upload, X, Check, Image as ImageIcon, Sparkles, HeartHandshake } from "lucide-react";
+import { Heart, Camera, Upload, X, Check, Image as ImageIcon, Sparkles, HeartHandshake, ChevronLeft, ChevronRight } from "lucide-react";
 import { collection, query, orderBy, onSnapshot, doc, setDoc, updateDoc, increment } from "firebase/firestore";
 import { db, handleFirestoreError, OperationType } from "../firebase";
 import { GuestPhoto } from "../types";
@@ -39,8 +39,34 @@ export default function PhotoGallery() {
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [isDragActive, setIsDragActive] = useState(false);
   const [showUploadModal, setShowUploadModal] = useState(false);
+  const [selectedPhotoIndex, setSelectedPhotoIndex] = useState<number | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Derived list of currently active photos for optimal lightbox viewing
+  const activePhotos = activeTab === "curated"
+    ? curatedPhotos.map((p) => ({ url: p.url, caption: p.caption, uploaderName: "Curated Collection" }))
+    : guestPhotos.map((p) => ({ url: p.imageUri, caption: p.caption || "", uploaderName: `By ${p.uploaderName}` }));
+
+  // Dynamic touch & hotkey navigations for full-screen lightbox experience
+  useEffect(() => {
+    if (selectedPhotoIndex === null) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setSelectedPhotoIndex(null);
+      } else if (e.key === "ArrowLeft") {
+        setSelectedPhotoIndex((prev) => 
+          prev !== null ? (prev - 1 + activePhotos.length) % activePhotos.length : null
+        );
+      } else if (e.key === "ArrowRight") {
+        setSelectedPhotoIndex((prev) => 
+          prev !== null ? (prev + 1) % activePhotos.length : null
+        );
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectedPhotoIndex, activePhotos.length]);
 
   // Read guest photos in real-time from Firestore
   useEffect(() => {
@@ -327,24 +353,25 @@ export default function PhotoGallery() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -15 }}
               transition={{ duration: 0.6 }}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+              className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6"
             >
               {curatedPhotos.map((photo, index) => (
                 <div 
                   key={index}
-                  className="bg-white border border-[#EFE3C3] p-2 rounded shadow-sm hover:shadow-md transition-all duration-300 relative group overflow-hidden"
+                  onClick={() => setSelectedPhotoIndex(index)}
+                  className="bg-white border border-[#EFE3C3] p-1.5 sm:p-2.5 rounded shadow-sm hover:shadow-md transition-all duration-300 relative group overflow-hidden cursor-pointer"
                 >
-                  <div className="absolute inset-3 border border-[#C5A03E]/5 pointer-events-none group-hover:border-[#C5A03E]/20 transition-all duration-300 z-10" />
+                  <div className="absolute inset-2 sm:inset-3 border border-[#C5A03E]/5 pointer-events-none group-hover:border-[#C5A03E]/20 transition-all duration-300 z-10" />
                   
-                  <div className="overflow-hidden aspect-[3/4] bg-gray-50 relative rounded">
+                  <div className="overflow-hidden aspect-square sm:aspect-[3/4] bg-gray-50 relative rounded">
                     <img
                       src={photo.url}
                       alt={photo.caption}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
+                      className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-700 pointer-events-none select-none"
                     />
                   </div>
-                  <div className="mt-3 text-center px-1">
-                    <p className="font-serif italic text-xs text-[#8E702D]">{photo.caption}</p>
+                  <div className="mt-2 text-center px-0.5">
+                    <p className="font-serif italic text-[10px] sm:text-xs text-[#8E702D] truncate">{photo.caption}</p>
                   </div>
                 </div>
               ))}
@@ -367,41 +394,45 @@ export default function PhotoGallery() {
                   </p>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                  {guestPhotos.map((photo) => (
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
+                  {guestPhotos.map((photo, index) => (
                     <div 
                       key={photo.id}
-                      className="bg-white border border-[#EFE3C3] p-1.5 rounded shadow-sm relative group overflow-hidden flex flex-col justify-between"
+                      onClick={() => setSelectedPhotoIndex(index)}
+                      className="bg-white border border-[#EFE3C3] p-1.5 rounded shadow-sm relative group overflow-hidden flex flex-col justify-between cursor-pointer"
                     >
-                      <div className="absolute inset-2 border border-[#C5A03E]/5 pointer-events-none group-hover:border-[#C5A03E]/15 transition-all duration-300 z-10" />
+                      <div className="absolute inset-1.5 border border-[#C5A03E]/5 pointer-events-none group-hover:border-[#C5A03E]/15 transition-all duration-300 z-10" />
                       
-                      <div className="overflow-hidden aspect-[4/5] bg-gray-100 relative rounded">
+                      <div className="overflow-hidden aspect-square sm:aspect-[4/5] bg-gray-100 relative rounded">
                         <img
                           src={photo.imageUri}
                           alt={photo.caption || "Guest Moments"}
-                          className="w-full h-full object-cover"
+                          className="w-full h-full object-cover pointer-events-none select-none"
                         />
                       </div>
 
                       {/* Photo details & Like button */}
-                      <div className="p-3">
-                        <div className="flex items-start justify-between gap-1.5 mb-1.5">
-                          <span className="font-serif text-[11px] font-semibold text-gray-800 tracking-wide inline-block truncate max-w-[80%]">
-                            By {photo.uploaderName}
+                      <div className="p-2 sm:p-3 text-left">
+                        <div className="flex items-center justify-between gap-1 mb-1">
+                          <span className="font-serif text-[10px] sm:text-[11px] font-semibold text-gray-800 tracking-wide inline-block truncate max-w-[70%]">
+                            {photo.uploaderName}
                           </span>
                           
                           {/* Interactive Like action */}
                           <button
-                            onClick={() => handleLikePhoto(photo.id, photo.likes)}
-                            className="flex items-center gap-1 text-gray-400 hover:text-red-500 transition-colors pointer-events-auto cursor-pointer"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleLikePhoto(photo.id, photo.likes);
+                            }}
+                            className="flex items-center gap-0.5 sm:gap-1 text-gray-400 hover:text-red-500 transition-colors pointer-events-auto cursor-pointer"
                           >
-                            <Heart className="w-3.5 h-3.5 hover:scale-110 active:scale-95 transition-transform" />
-                            <span className="text-[10px] font-mono text-gray-500">{photo.likes}</span>
+                            <Heart className="w-3 sm:w-3.5 h-3 sm:h-3.5 hover:scale-110 active:scale-95 transition-transform" />
+                            <span className="text-[9px] sm:text-[10px] font-mono text-gray-500">{photo.likes}</span>
                           </button>
                         </div>
                         
                         {photo.caption && (
-                          <p className="font-sans text-[10px] text-gray-500 italic leading-relaxed line-clamp-2">
+                          <p className="font-sans text-[9px] sm:text-[10px] text-gray-500 italic leading-snug line-clamp-1">
                             "{photo.caption}"
                           </p>
                         )}
@@ -562,6 +593,98 @@ export default function PhotoGallery() {
                   </button>
                 </form>
               </motion.div>
+            </div>
+          )}
+        </AnimatePresence>
+
+        {/* --- LIGHTBOX MODAL --- */}
+        <AnimatePresence>
+          {selectedPhotoIndex !== null && activePhotos[selectedPhotoIndex] && (
+            <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/95 backdrop-blur-md p-4 select-none">
+              
+              {/* Top bar with counter, author, and close button */}
+              <div className="absolute top-0 inset-x-0 p-4 md:p-6 flex items-center justify-between text-white bg-gradient-to-b from-black/60 to-transparent z-10 font-sans">
+                <div className="text-left">
+                  <p className="text-xs uppercase font-cinzel tracking-wider text-[#F3E8C1]">
+                    {activePhotos[selectedPhotoIndex].uploaderName}
+                  </p>
+                  <p className="text-[10px] text-gray-400 font-mono">
+                    {selectedPhotoIndex + 1} of {activePhotos.length}
+                  </p>
+                </div>
+                
+                <button
+                  onClick={() => setSelectedPhotoIndex(null)}
+                  className="p-2 md:p-3 rounded-full hover:bg-white/10 active:scale-95 transition-all text-white/80 hover:text-white cursor-pointer pointer-events-auto"
+                  aria-label="Close Lightbox"
+                >
+                  <X className="w-5 h-5 md:w-6 md:h-6" />
+                </button>
+              </div>
+
+              {/* Main Content Area */}
+              <div className="relative w-full max-w-4xl h-[70vh] md:h-[80vh] flex items-center justify-center">
+                
+                {/* Navigation Left */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedPhotoIndex((prev) =>
+                      prev !== null ? (prev - 1 + activePhotos.length) % activePhotos.length : null
+                    );
+                  }}
+                  className="absolute left-2 md:left-4 p-2 md:p-3 rounded-full bg-black/40 hover:bg-black/70 text-white/80 hover:text-white transition-colors cursor-pointer pointer-events-auto z-20"
+                  aria-label="Previous Photo"
+                >
+                  <ChevronLeft className="w-6 h-6 md:w-8 md:h-8" />
+                </button>
+
+                {/* Animated Image Wrapper */}
+                <motion.div
+                  key={selectedPhotoIndex}
+                  initial={{ opacity: 0, scale: 0.97 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.97 }}
+                  transition={{ duration: 0.25 }}
+                  className="w-full h-full flex items-center justify-center p-2"
+                >
+                  <img
+                    src={activePhotos[selectedPhotoIndex].url}
+                    alt={activePhotos[selectedPhotoIndex].caption || "Wedding gallery photo"}
+                    className="max-w-full max-h-full object-contain rounded-sm shadow-xl select-none"
+                    draggable={false}
+                  />
+                </motion.div>
+
+                {/* Navigation Right */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedPhotoIndex((prev) =>
+                      prev !== null ? (prev + 1) % activePhotos.length : null
+                    );
+                  }}
+                  className="absolute right-2 md:right-4 p-2 md:p-3 rounded-full bg-black/40 hover:bg-black/70 text-white/80 hover:text-white transition-colors cursor-pointer pointer-events-auto z-20"
+                  aria-label="Next Photo"
+                >
+                  <ChevronRight className="w-6 h-6 md:w-8 md:h-8" />
+                </button>
+              </div>
+
+              {/* Bottom Caption bar */}
+              {activePhotos[selectedPhotoIndex].caption && (
+                <div className="mt-4 max-w-xl text-center px-6 py-3 bg-white/5 backdrop-blur-xs rounded-full border border-white/10 z-10 inline-block">
+                  <p className="text-xs md:text-sm font-serif italic text-[#F3E8C1] leading-relaxed">
+                    "{activePhotos[selectedPhotoIndex].caption}"
+                  </p>
+                </div>
+              )}
+
+              {/* Tap backdrop to close clue (visible on desktop) */}
+              <div 
+                className="absolute inset-0 -z-10" 
+                onClick={() => setSelectedPhotoIndex(null)}
+              />
             </div>
           )}
         </AnimatePresence>
