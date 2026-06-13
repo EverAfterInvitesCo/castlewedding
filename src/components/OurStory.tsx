@@ -39,8 +39,7 @@ export default function OurStory() {
                 <img 
                   src={chapter.image} 
                   alt={chapter.title} 
-                  className="w-full h-64 object-cover shadow-lg"
-                  onError={(e) => (e.currentTarget.src = "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=800")}
+                  className="w-full h-64 object-cover shadow-lg bg-gray-100"
                 />
               </div>
               <div className={index % 2 === 0 ? "md:order-2 text-left" : "md:order-1 text-left"}>
