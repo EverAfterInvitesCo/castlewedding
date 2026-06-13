@@ -23,7 +23,8 @@ export default function App() {
             key="main-content"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 1.0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1.5, ease: "easeInOut" }}
           >
             <main className="flex-1 w-full flex flex-col">
               <HeroSection />
