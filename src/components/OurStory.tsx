@@ -1,6 +1,5 @@
 import { motion } from "motion/react";
 
-// Ensure this specific line exists exactly like this
 export default function OurStory() {
   const chapters = [
     {
@@ -8,7 +7,8 @@ export default function OurStory() {
       date: "October 14, 2021",
       subtitle: "A London Autumn Greeting",
       description: "It was a crisp golden afternoon in Hyde Park when Farah and Omar's paths first crossed. Farah was hunting for a quiet reading spot under the amber trees, and Omar was searching for his lost sketch directory. A simple recommendation of coffee led to a three-hour conversation, sharing dreams, favorite playlists, and discovering that their childhood homes were just streets apart.",
-      image: "/hand.png", 
+      // Using the absolute path for GitHub Pages
+      image: "/castlewedding/hand.png",
     },
     {
       title: "The Blossoming Chapters",
@@ -77,6 +77,7 @@ export default function OurStory() {
                   
                   <div className="w-full aspect-[4/3] rounded overflow-hidden">
                     <img 
+                      key={chapter.image}
                       src={chapter.image} 
                       alt={chapter.title} 
                       className="w-full h-full object-cover grayscale-[10%] hover:grayscale-0 hover:scale-105 transition-all duration-1000"
