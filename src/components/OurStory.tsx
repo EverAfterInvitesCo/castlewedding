@@ -4,7 +4,7 @@ const chapters = [
     date: "October 14, 2021",
     subtitle: "A London Autumn Greeting",
     description: "It was a crisp golden afternoon in Hyde Park when Farah and Omar’s paths first crossed. Farah was hunting for a quiet reading spot under the amber trees, and Omar was searching for his lost sketch directory. A simple recommendation of coffee led to a three-hour conversation, sharing dreams, favorite playlists, and discovering that their childhood homes were just streets apart in Cairo.",
-    image: "/london.png",
+    image: "/hand.png",
   },
   {
     title: "The Blossoming Chapters",
