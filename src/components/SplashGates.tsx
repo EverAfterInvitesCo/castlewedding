@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { motion } from "motion/react";
 
 interface SplashGatesProps {
@@ -6,51 +6,28 @@ interface SplashGatesProps {
 }
 
 export default function SplashGates({ onReveal }: SplashGatesProps) {
-  const [videoError, setVideoError] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  const handleVideoInteraction = () => {
-    // When the user clicks anywhere, attempt to play
-    if (videoRef.current) {
-      videoRef.current.muted = false; // Enable sound on click
-      videoRef.current.play().catch((err) => {
-        console.warn("Playback failed:", err);
-      });
-    }
-  };
-
-  const handleEnded = () => {
-    // This is called when the video finishes
-    onReveal();
-  };
+  const [videoLoaded, setVideoLoaded] = useState(false);
 
   return (
     <motion.div 
-      initial={{ opacity: 1 }}
+      className="fixed inset-0 z-50 bg-black flex items-center justify-center"
       exit={{ opacity: 0 }}
-      transition={{ duration: 1.0, ease: "easeInOut" }}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black cursor-pointer"
-      onClick={handleVideoInteraction}
+      transition={{ duration: 1.0 }}
     >
-      {!videoError ? (
-        <video
-          ref={videoRef}
-          className="w-full h-full object-cover"
-          autoPlay
-          muted // Must be muted to autoplay in most browsers
-          playsInline
-          onEnded={handleEnded}
-          onError={() => {
-            console.error("Video failed to load.");
-            setVideoError(true);
-            onReveal(); // If video fails, reveal site anyway
-          }}
-        >
-          <source src="/gates.mp4" type="video/mp4" />
-        </video>
-      ) : (
-        // Fallback if video fails to load
-        <div className="text-white">Loading...</div>
+      <video
+        autoPlay
+        muted
+        playsInline
+        className="w-full h-full object-cover"
+        onLoadedData={() => setVideoLoaded(true)}
+        onEnded={onReveal}
+        onError={() => onReveal()}
+      >
+        <source src="/gates.mp4" type="video/mp4" />
+      </video>
+      
+      {!videoLoaded && (
+        <div className="text-white absolute">Loading...</div>
       )}
     </motion.div>
   );
