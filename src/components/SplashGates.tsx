@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "motion/react";
 
 interface SplashGatesProps {
@@ -6,7 +6,13 @@ interface SplashGatesProps {
 }
 
 export default function SplashGates({ onReveal }: SplashGatesProps) {
-  const [videoLoaded, setVideoLoaded] = useState(false);
+  useEffect(() => {
+    // Fail-safe: Reveal site after 5 seconds if video is stuck
+    const timer = setTimeout(() => {
+      onReveal();
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, [onReveal]);
 
   return (
     <motion.div 
@@ -19,16 +25,11 @@ export default function SplashGates({ onReveal }: SplashGatesProps) {
         muted
         playsInline
         className="w-full h-full object-cover"
-        onLoadedData={() => setVideoLoaded(true)}
         onEnded={onReveal}
         onError={() => onReveal()}
       >
         <source src="/gates.mp4" type="video/mp4" />
       </video>
-      
-      {!videoLoaded && (
-        <div className="text-white absolute">Loading...</div>
-      )}
     </motion.div>
   );
 }
