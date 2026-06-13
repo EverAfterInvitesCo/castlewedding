@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "motion/react";
-import SplashGates from "./components/SplashGates";
+import React from "react";
 import HeroSection from "./components/HeroSection";
 import CountdownSection from "./components/CountdownSection";
 import OurStory from "./components/OurStory";
@@ -11,38 +9,18 @@ import RSVPForm from "./components/RSVPForm";
 import AudioPlayer from "./components/AudioPlayer";
 
 export default function App() {
-  const [hasRevealed, setHasRevealed] = useState(false);
-
   return (
     <div className="min-h-screen bg-[#FDFBF7] text-[#2A2825] font-sans overflow-x-hidden selection:bg-[#C5A03E]/20 text-center">
-      <AnimatePresence mode="wait">
-        {!hasRevealed ? (
-          <SplashGates key="gates" onReveal={() => setHasRevealed(true)} />
-        ) : (
-          <motion.div
-            key="main-content"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1.0 }}
-          >
-            <header className="absolute top-0 left-0 right-0 z-30 h-24 flex items-center justify-between px-6 md:px-12 pointer-events-none">
-              <div className="font-cinzel text-sm tracking-[0.3em] font-bold text-white/90">F & O</div>
-            </header>
-
-            <main>
-              <HeroSection />
-              <CountdownSection />
-              <OurStory />
-              <EventAndTimeline />
-              <CelebrationSchedule />
-              <PhotoGallery />
-              <RSVPForm />
-            </main>
-            
-            <AudioPlayer />
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <main className="flex-1 w-full flex flex-col">
+        <HeroSection />
+        <CountdownSection />
+        <OurStory />
+        <EventAndTimeline />
+        <CelebrationSchedule />
+        <PhotoGallery />
+        <RSVPForm />
+      </main>
+      <AudioPlayer />
     </div>
   );
 }
