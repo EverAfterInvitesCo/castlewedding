@@ -1,7 +1,7 @@
 import { useState, FormEvent } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { RSVPResponse } from "../types";
-import { Heart, Sparkles, Check, CheckCircle2, AlertCircle } from "lucide-react";
+import { Heart, Sparkles, Check, AlertCircle } from "lucide-react";
 
 interface RSVPFormProps {
   onRSVPSubmitted?: () => void;
@@ -51,7 +51,6 @@ export default function RSVPForm({ onRSVPSubmitted }: RSVPFormProps) {
         
         if (res.ok) {
           rsvpData = await res.json();
-          // Also sync to local storage
           const stored = localStorage.getItem("wedding_rsvps");
           const rsvps: RSVPResponse[] = stored ? JSON.parse(stored) : [];
           rsvps.push(rsvpData);
@@ -60,7 +59,6 @@ export default function RSVPForm({ onRSVPSubmitted }: RSVPFormProps) {
           throw new Error("API post failed");
         }
       } catch (e) {
-        // Fallback to offline localstorage persistence
         rsvpData = {
           id: "rsvp-" + Date.now(),
           fullName: fullName.trim(),
@@ -77,7 +75,6 @@ export default function RSVPForm({ onRSVPSubmitted }: RSVPFormProps) {
         localStorage.setItem("wedding_rsvps", JSON.stringify(rsvps));
       }
 
-      // Trigger callback if defined
       if (onRSVPSubmitted) {
         onRSVPSubmitted();
       }
@@ -85,7 +82,6 @@ export default function RSVPForm({ onRSVPSubmitted }: RSVPFormProps) {
       setSubmittedName(fullName.trim());
       setStatus("success");
       
-      // Clean up fields
       setFullName("");
       setEmail("");
       setGuestsCount(1);
@@ -103,14 +99,9 @@ export default function RSVPForm({ onRSVPSubmitted }: RSVPFormProps) {
       <div className="absolute right-[-15%] top-[-10%] w-96 h-96 rounded-full bg-[#C5A059]/5 blur-3xl pointer-events-none" />
       <div className="absolute left-[-15%] bottom-[-10%] w-96 h-96 rounded-full bg-[#5F6F5E]/5 blur-3xl pointer-events-none" />
 
-      {/* Handcrafted floral corner engravings */}
-      <FloralCorner className="top-4 left-4" side="top-left" />
-      <FloralCorner className="bottom-4 right-4" side="bottom-right" />
-
       <div className="max-w-2xl mx-auto text-center mb-14 relative z-10">
         <span className="font-script text-4xl sm:text-5xl text-[#AF853E] block mb-1">Be Our Guest</span>
         <h2 className="font-serif-luxury text-3xl sm:text-5xl text-letterpress font-medium tracking-wide mb-3">Kindly Reply</h2>
-        <FloralFlourish className="my-5" />
         <p className="text-sm text-[#2C261F]/80 max-w-sm mx-auto font-light leading-relaxed bg-[#FCFAF6]/40 p-3 rounded-lg border border-[#F3EBDD]/20 backdrop-blur-xs">
           Please respond by September 15, 2026. We are excited to raise a champagne toast with you!
         </p>
@@ -126,7 +117,6 @@ export default function RSVPForm({ onRSVPSubmitted }: RSVPFormProps) {
               exit={{ opacity: 0, scale: 0.95 }}
               className="bg-[#FCFAF6] rounded-2xl p-8 sm:p-10 border border-[#C5A059] border-double-inset shadow-md text-center space-y-6 relative overflow-hidden"
             >
-              {/* Gold light burst animation behind wax seal */}
               <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#C5A059] via-[#FAF6EE] to-[#AF853E]" />
               
               <div className="w-16 h-16 rounded-full bg-[#EBF0EA] border-2 border-[#5F6F5E] flex items-center justify-center mx-auto shadow-2xs">
@@ -168,7 +158,6 @@ export default function RSVPForm({ onRSVPSubmitted }: RSVPFormProps) {
                 </div>
               )}
 
-              {/* Attendance Selection */}
               <div className="space-y-2">
                 <label className="text-[10px] tracking-[0.15em] text-[#C5A059] block font-bold uppercase text-center mb-3">
                   ATTENDANCE STATUS
@@ -181,7 +170,7 @@ export default function RSVPForm({ onRSVPSubmitted }: RSVPFormProps) {
                       attending === "yes"
                         ? "border-[#C5A059] bg-[#FAF6EE] text-[#AF853E] shadow-3xs"
                         : "border-[#F3EBDD] bg-white hover:bg-[#FCFAF6] text-[#2C261F]/60"
-                     }`}
+                    }`}
                   >
                     <Heart className={`w-4 h-4 ${attending === "yes" ? "fill-[#C5A059]" : ""}`} />
                     <span>Joyfully Accept</span>
@@ -202,7 +191,6 @@ export default function RSVPForm({ onRSVPSubmitted }: RSVPFormProps) {
                 </div>
               </div>
 
-              {/* Full Name */}
               <div className="space-y-1">
                 <label className="text-[10px] tracking-widest text-[#2C261F]/50 block font-semibold uppercase">
                   FULL NAME
@@ -216,7 +204,6 @@ export default function RSVPForm({ onRSVPSubmitted }: RSVPFormProps) {
                 />
               </div>
 
-              {/* Email Address */}
               <div className="space-y-1">
                 <label className="text-[10px] tracking-widest text-[#2C261F]/50 block font-semibold uppercase">
                   EMAIL ADDRESS
@@ -230,7 +217,6 @@ export default function RSVPForm({ onRSVPSubmitted }: RSVPFormProps) {
                 />
               </div>
 
-              {/* Guest Counts (Conditional) */}
               {attending === "yes" && (
                 <div className="space-y-2">
                   <label className="text-[10px] tracking-widest text-[#2C261F]/50 block font-semibold uppercase">
@@ -261,7 +247,6 @@ export default function RSVPForm({ onRSVPSubmitted }: RSVPFormProps) {
                 </div>
               )}
 
-              {/* Dietary Requirements (Conditional) */}
               {attending === "yes" && (
                 <div className="space-y-1">
                   <label className="text-[10px] tracking-widest text-[#2C261F]/50 block font-semibold uppercase">
@@ -277,7 +262,6 @@ export default function RSVPForm({ onRSVPSubmitted }: RSVPFormProps) {
                 </div>
               )}
 
-              {/* Well Wishes */}
               <div className="space-y-1">
                 <label className="text-[10px] tracking-widest text-[#2C261F]/50 block font-semibold uppercase">
                   WELL WISHES FOR THE COUPLE
@@ -291,7 +275,6 @@ export default function RSVPForm({ onRSVPSubmitted }: RSVPFormProps) {
                 />
               </div>
 
-              {/* Action Submit */}
               <button
                 type="submit"
                 id="btn-rsvp-submit"
