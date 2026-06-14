@@ -23,21 +23,24 @@ export default function OrganizerDashboard({
   const [password, setPassword] = useState("");
   const [isUnlocked, setIsUnlocked] = useState(false);
   const [authError, setAuthError] = useState(false);
-  const [tempUrl, setTempUrl] = useState(uploadUrl);
-
-  useEffect(() => {
-    setTempUrl(uploadUrl);
-  }, [uploadUrl]);
 
   const loadSubmissions = async () => {
     const { data, error } = await supabase.from('rsvps').select('*');
-    if (error) console.error("Error fetching:", error);
-    else setSubmss(data || []);
+    if (error) {
+      console.error("Error fetching:", error);
+    } else {
+      setSubmss(data || []);
+    }
   };
 
+  // This effect handles the live-updating logic
   useEffect(() => {
-    if (isOpen && isUnlocked) loadSubmissions();
-  }, [tick, isOpen, isUnlocked]);
+    if (isOpen && isUnlocked) {
+      loadSubmissions(); // Load immediately when opened
+      const interval = setInterval(loadSubmissions, 5000); // Check every 5 seconds
+      return () => clearInterval(interval); // Cleanup when closed
+    }
+  }, [isOpen, isUnlocked, tick]);
 
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
@@ -55,10 +58,9 @@ export default function OrganizerDashboard({
     }
   };
 
-  // Corrected boolean logic to match your database structure
   const accepts = submss.filter((s) => s.attending === true);
   const declines = submss.filter((s) => s.attending === false);
-  const totalAttendingGuests = accepts.reduce((acc, curr) => acc + (curr.guestsCount || 0), 0);
+  const totalAttendingGuests = accepts.reduce((acc, curr) => acc + (Number(curr.guestsCount) || 0), 0);
 
   return (
     <section className="bg-[#FAF6EE] py-12 px-6 sm:px-8 border-t border-[#F3EBDD]/60 max-w-md mx-auto">
