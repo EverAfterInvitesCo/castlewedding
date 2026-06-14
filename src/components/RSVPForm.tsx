@@ -2,7 +2,6 @@ import { useState, FormEvent } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { RSVPResponse } from "../types";
 import { Heart, Sparkles, Check, CheckCircle2, AlertCircle } from "lucide-react";
-import { FloralFlourish, FloralCorner, StationeryFrame } from "./FloralDecor";
 
 interface RSVPFormProps {
   onRSVPSubmitted?: () => void;
