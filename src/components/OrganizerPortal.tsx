@@ -1,19 +1,12 @@
 import { useState, useEffect, FormEvent } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { RSVPResponse } from "../types";
+import { supabase } from "../supabaseClient"; // Ensure this path is correct
 import { 
   Users, 
   Heart, 
   Sparkles, 
-  ShieldCheck, 
-  Trash2, 
-  Smile, 
-  UtensilsCrossed,
-  Camera,
-  QrCode,
-  Save,
-  Link2,
-  Download
+  ShieldCheck 
 } from "lucide-react";
 
 interface OrganizerDashboardProps {
@@ -35,80 +28,29 @@ export default function OrganizerDashboard({
   const [isUnlocked, setIsUnlocked] = useState(false);
   const [authError, setAuthError] = useState(false);
   const [tempUrl, setTempUrl] = useState(uploadUrl);
-  const [showSaveSuccess, setShowSaveSuccess] = useState(false);
-  const [candids, setCandids] = useState<any[]>([]);
 
   useEffect(() => {
     setTempUrl(uploadUrl);
   }, [uploadUrl]);
 
+  // Updated to fetch from Supabase
   const loadSubmissions = async () => {
-    try {
-      const res = await fetch("/api/rsvps");
-      if (res.ok) {
-        const data = await res.json();
-        setSubmss(data);
-        localStorage.setItem("wedding_rsvps", JSON.stringify(data));
-      }
-    } catch (e) {
-      const stored = localStorage.getItem("wedding_rsvps");
-      setSubmss(stored ? JSON.parse(stored) : []);
+    const { data, error } = await supabase
+      .from('rsvps')
+      .select('*');
+    
+    if (error) {
+      console.error("Error fetching RSVPs:", error);
+    } else {
+      setSubmss(data || []);
     }
   };
 
   useEffect(() => {
-    loadSubmissions();
-  }, [tick, isOpen]);
-
-  const loadCandids = async () => {
-    try {
-      const res = await fetch("/api/candids");
-      if (res.ok) {
-        const data = await res.json();
-        setCandids(data);
-        localStorage.setItem("wedding_guest_candids", JSON.stringify(data));
-      }
-    } catch (e) {
-      const stored = localStorage.getItem("wedding_guest_candids");
-      setCandids(stored ? JSON.parse(stored) : []);
+    if (isOpen) {
+      loadSubmissions();
     }
-  };
-
-  useEffect(() => {
-    loadCandids();
-    const handleStorageChange = () => loadCandids();
-    window.addEventListener("storage", handleStorageChange);
-    const timer = setInterval(loadCandids, 4000);
-    return () => {
-      window.removeEventListener("storage", handleStorageChange);
-      clearInterval(timer);
-    };
   }, [tick, isOpen]);
-
-  const handleToggleApprove = async (id: string) => {
-    const updated = candids.map(c => c.id === id ? { ...c, approved: !c.approved } : c);
-    localStorage.setItem("wedding_guest_candids", JSON.stringify(updated));
-    setCandids(updated);
-    window.dispatchEvent(new Event("storage"));
-  };
-
-  const handleDeleteCandid = async (id: string) => {
-    if (confirm("Delete this photo permanently?")) {
-      const updated = candids.filter(c => c.id !== id);
-      localStorage.setItem("wedding_guest_candids", JSON.stringify(updated));
-      setCandids(updated);
-      window.dispatchEvent(new Event("storage"));
-    }
-  };
-
-  const handleDownloadCandid = (c: any) => {
-    const link = document.createElement("a");
-    link.href = c.imgData;
-    link.download = `candid_${c.id}.jpg`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
 
   const handleUnlock = (e: FormEvent) => {
     e.preventDefault();
@@ -122,7 +64,7 @@ export default function OrganizerDashboard({
 
   const accepts = submss.filter((s) => s.attending === "yes");
   const declines = submss.filter((s) => s.attending === "no");
-  const totalAttendingGuests = accepts.reduce((acc, curr) => acc + curr.guestsCount, 0);
+  const totalAttendingGuests = accepts.reduce((acc, curr) => acc + (curr.guestsCount || 0), 0);
 
   return (
     <section id="organizer-dashboard-section" className="bg-[#FAF6EE] py-12 px-6 sm:px-8 border-t border-[#F3EBDD]/60 max-w-md mx-auto">
@@ -132,7 +74,7 @@ export default function OrganizerDashboard({
             <ShieldCheck className="w-5 h-5 text-[#C5A059]" />
             <div>
               <h4 className="font-sans font-semibold text-xs text-[#2C261F] uppercase tracking-wider">Organizer Portal</h4>
-              <p className="text-[10px] text-[#2C261F]/50">Monitor RSVPs and Guest Photos.</p>
+              <p className="text-[10px] text-[#2C261F]/50">Monitor RSVPs.</p>
             </div>
           </div>
           <span className="text-xs text-[#C5A059] font-semibold">{isOpen ? "Collapse" : "Access"}</span>
@@ -150,7 +92,6 @@ export default function OrganizerDashboard({
                   </form>
                 ) : (
                   <div className="space-y-4">
-                    {/* Summary Counters */}
                     <div className="grid grid-cols-3 gap-2">
                       <div className="bg-[#EBF0EA] rounded-lg p-2.5 text-center">
                         <Users className="w-4 h-4 text-[#5F6F5E] mx-auto mb-1" />
@@ -169,7 +110,6 @@ export default function OrganizerDashboard({
                       </div>
                     </div>
 
-                    {/* Album Setup */}
                     <div className="bg-[#FAF6EE] border border-[#C5A059]/20 rounded-xl p-3.5 space-y-3">
                       <h5 className="text-[11px] font-bold text-[#C5A059] uppercase tracking-wider">Photo Album Link</h5>
                       <div className="flex gap-1.5">
