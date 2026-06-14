@@ -55,8 +55,9 @@ export default function OrganizerDashboard({
     }
   };
 
-  const accepts = submss.filter((s) => s.attending === "yes");
-  const declines = submss.filter((s) => s.attending === "no");
+  // Corrected boolean logic to match your database structure
+  const accepts = submss.filter((s) => s.attending === true);
+  const declines = submss.filter((s) => s.attending === false);
   const totalAttendingGuests = accepts.reduce((acc, curr) => acc + (curr.guestsCount || 0), 0);
 
   return (
