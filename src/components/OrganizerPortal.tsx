@@ -36,9 +36,9 @@ export default function OrganizerDashboard({
   // This effect handles the live-updating logic
   useEffect(() => {
     if (isOpen && isUnlocked) {
-      loadSubmissions(); // Load immediately when opened
-      const interval = setInterval(loadSubmissions, 5000); // Check every 5 seconds
-      return () => clearInterval(interval); // Cleanup when closed
+      loadSubmissions(); 
+      const interval = setInterval(loadSubmissions, 5000); 
+      return () => clearInterval(interval); 
     }
   }, [isOpen, isUnlocked, tick]);
 
@@ -58,9 +58,18 @@ export default function OrganizerDashboard({
     }
   };
 
-  const accepts = submss.filter((s) => s.attending === true);
-  const declines = submss.filter((s) => s.attending === false);
-  const totalAttendingGuests = accepts.reduce((acc, curr) => acc + (Number(curr.guestsCount) || 0), 0);
+  // Updated flexible filter logic
+  const accepts = submss.filter((s) => {
+    const val = String(s.attending).toLowerCase();
+    return val === 'true' || val === 'yes';
+  });
+
+  const declines = submss.filter((s) => {
+    const val = String(s.attending).toLowerCase();
+    return val === 'false' || val === 'no';
+  });
+
+  const totalAttendingGuests = accepts.reduce((acc, curr) => acc + (Number(curr.guestsCount) || 1), 0);
 
   return (
     <section className="bg-[#FAF6EE] py-12 px-6 sm:px-8 border-t border-[#F3EBDD]/60 max-w-md mx-auto">
