@@ -18,17 +18,7 @@ export default function App() {
     <div className="min-h-screen bg-[#FDFBF7] text-[#2A2825] font-sans overflow-x-hidden selection:bg-[#C5A03E]/20 text-center">
       <AnimatePresence mode="wait">
         {!hasRevealed ? (
-          <motion.div key="gates" exit={{ opacity: 0 }}>
-            <SplashGates onReveal={() => setHasRevealed(true)} />
-            
-            {/* Skip Intro Button */}
-            <button
-              onClick={() => setHasRevealed(true)}
-              className="fixed top-8 right-8 z-50 px-6 py-2 bg-transparent border border-[#C5A03E] text-[#C5A03E] hover:bg-[#C5A03E] hover:text-white transition-all duration-300 font-serif tracking-widest text-sm uppercase"
-            >
-              Skip Intro
-            </button>
-          </motion.div>
+          <SplashGates key="gates" onReveal={() => setHasRevealed(true)} />
         ) : (
           <motion.div
             key="main-content"
