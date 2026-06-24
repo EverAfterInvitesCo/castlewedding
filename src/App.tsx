@@ -9,6 +9,7 @@ import EventAndTimeline from "./components/EventAndTimeline";
 import CelebrationSchedule from "./components/CelebrationSchedule";
 import PhotoGallery from "./components/PhotoGallery";
 import RSVPForm from "./components/RSVPForm";
+import UploadPhotos from "./components/UploadPhotos";
 import OrganizerPortal from "./components/OrganizerPortal";
 import AudioPlayer from "./components/AudioPlayer";
 
@@ -36,19 +37,12 @@ export default function App() {
               <Reveal><EventAndTimeline /></Reveal>
               <Reveal><CelebrationSchedule /></Reveal>
               
-              {/* Order: RSVP -> Upload -> Gallery */}
-              <div className="flex flex-col">
+              {/* FINAL ORDER: RSVP -> Upload -> Gallery -> Portal */}
+              <div className="flex flex-col gap-8 py-8">
                 <Reveal><RSVPForm /></Reveal>
-                
-                {/* Upload Section */}
-                <div className="-mt-16">
-                  <Reveal><OrganizerPortal /></Reveal>
-                </div>
-                
-                {/* Gallery Section */}
-                <div className="-mt-10">
-                  <Reveal><PhotoGallery /></Reveal>
-                </div>
+                <Reveal><UploadPhotos /></Reveal>
+                <Reveal><PhotoGallery /></Reveal>
+                <OrganizerPortal />
               </div>
             </main>
             
