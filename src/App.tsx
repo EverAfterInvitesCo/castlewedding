@@ -9,8 +9,8 @@ import EventAndTimeline from "./components/EventAndTimeline";
 import CelebrationSchedule from "./components/CelebrationSchedule";
 import PhotoGallery from "./components/PhotoGallery";
 import RSVPForm from "./components/RSVPForm";
-import UploadPhotos from "./components/UploadPhotos";
-import OrganizerPortal from "./components/OrganizerPortal";
+import UploadPhotos from "./components/UploadPhotos"; 
+import OrganizerPortal from "./components/OrganizerPortal"; 
 import AudioPlayer from "./components/AudioPlayer";
 
 export default function App() {
@@ -29,21 +29,18 @@ export default function App() {
             exit={{ opacity: 0 }}
             transition={{ duration: 1.5, ease: "easeInOut" }}
           >
-            <main className="flex-1 w-full flex flex-col">
+            <main className="flex-1 w-full flex flex-col gap-0">
               <HeroSection />
-              
               <Reveal><CountdownSection /></Reveal>
               <Reveal><OurStory /></Reveal>
               <Reveal><EventAndTimeline /></Reveal>
               <Reveal><CelebrationSchedule /></Reveal>
               
-              {/* FINAL ORDER: RSVP -> Upload -> Gallery -> Portal */}
-              <div className="flex flex-col gap-8 py-8">
-                <Reveal><RSVPForm /></Reveal>
-                <Reveal><UploadPhotos /></Reveal>
-                <Reveal><PhotoGallery /></Reveal>
-                <OrganizerPortal />
-              </div>
+              {/* Order: RSVP -> Upload -> Gallery -> Portal */}
+              <Reveal><RSVPForm /></Reveal>
+              <Reveal><UploadPhotos /></Reveal>
+              <Reveal><PhotoGallery /></Reveal>
+              <OrganizerPortal />
             </main>
             
             <AudioPlayer />
