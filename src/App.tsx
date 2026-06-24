@@ -28,17 +28,21 @@ export default function App() {
             exit={{ opacity: 0 }}
             transition={{ duration: 1.5, ease: "easeInOut" }}
           >
-            <main className="flex-1 w-full flex flex-col">
-              {/* HeroSection does not have Reveal here so only its internal text animates */}
-              <HeroSection /> 
+            <main className="flex-1 w-full flex flex-col gap-0">
+              {/* Removed Reveal from HeroSection */}
+              <HeroSection />
+              
               <Reveal><CountdownSection /></Reveal>
               <Reveal><OurStory /></Reveal>
               <Reveal><EventAndTimeline /></Reveal>
               <Reveal><CelebrationSchedule /></Reveal>
               <Reveal><PhotoGallery /></Reveal>
               <Reveal><RSVPForm /></Reveal>
-              <Reveal><OrganizerPortal /></Reveal>
+              
+              {/* Removed Reveal from OrganizerPortal */}
+              <OrganizerPortal />
             </main>
+            
             <AudioPlayer />
           </motion.div>
         )}
