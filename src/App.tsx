@@ -36,12 +36,16 @@ export default function App() {
               <Reveal><EventAndTimeline /></Reveal>
               <Reveal><CelebrationSchedule /></Reveal>
               
-              {/* Tightened section: Pulling components together with -mt-10 */}
-              <div className="flex flex-col -mt-10">
+              {/* Order: RSVP -> Upload -> Gallery */}
+              <div className="flex flex-col">
                 <Reveal><RSVPForm /></Reveal>
+                
+                {/* Upload Section */}
                 <div className="-mt-16">
                   <Reveal><OrganizerPortal /></Reveal>
                 </div>
+                
+                {/* Gallery Section */}
                 <div className="-mt-10">
                   <Reveal><PhotoGallery /></Reveal>
                 </div>
