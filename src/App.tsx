@@ -36,14 +36,16 @@ export default function App() {
               <Reveal><EventAndTimeline /></Reveal>
               <Reveal><CelebrationSchedule /></Reveal>
               
-              {/* RSVP, Photo Upload/Gallery area with reduced spacing */}
-              <div className="space-y-4">
+              {/* Tightened section: Pulling components together with -mt-10 */}
+              <div className="flex flex-col -mt-10">
                 <Reveal><RSVPForm /></Reveal>
-                {/* Assuming PhotoUpload is part of or before your PhotoGallery */}
-                <Reveal><PhotoGallery /></Reveal>
+                <div className="-mt-16">
+                  <Reveal><OrganizerPortal /></Reveal>
+                </div>
+                <div className="-mt-10">
+                  <Reveal><PhotoGallery /></Reveal>
+                </div>
               </div>
-              
-              <OrganizerPortal />
             </main>
             
             <AudioPlayer />
