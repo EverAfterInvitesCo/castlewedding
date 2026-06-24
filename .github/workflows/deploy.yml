@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - master
   workflow_dispatch:
 
 permissions:
@@ -38,12 +37,10 @@ jobs:
       - name: Build site
         run: npm run build
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
+          name: github-pages # Explicitly naming the artifact
           path: './dist'
 
       - name: Deploy to GitHub Pages
