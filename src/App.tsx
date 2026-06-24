@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import SplashGates from "./components/SplashGates";
-import Reveal from "./components/Reveal"; // Make sure this path is correct based on where you saved Reveal.tsx
+import Reveal from "./components/Reveal";
 import HeroSection from "./components/HeroSection";
 import CountdownSection from "./components/CountdownSection";
 import OurStory from "./components/OurStory";
@@ -29,7 +29,8 @@ export default function App() {
             transition={{ duration: 1.5, ease: "easeInOut" }}
           >
             <main className="flex-1 w-full flex flex-col">
-              <Reveal><HeroSection /></Reveal>
+              {/* HeroSection does not have Reveal here so only its internal text animates */}
+              <HeroSection /> 
               <Reveal><CountdownSection /></Reveal>
               <Reveal><OurStory /></Reveal>
               <Reveal><EventAndTimeline /></Reveal>
