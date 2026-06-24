@@ -33,7 +33,6 @@ export default function OrganizerDashboard({
     }
   };
 
-  // This effect handles the live-updating logic
   useEffect(() => {
     if (isOpen && isUnlocked) {
       loadSubmissions(); 
@@ -58,7 +57,6 @@ export default function OrganizerDashboard({
     }
   };
 
-  // Updated flexible filter logic
   const accepts = submss.filter((s) => {
     const val = String(s.attending).toLowerCase();
     return val === 'true' || val === 'yes';
@@ -72,36 +70,33 @@ export default function OrganizerDashboard({
   const totalAttendingGuests = accepts.reduce((acc, curr) => acc + (Number(curr.guestsCount) || 1), 0);
 
   return (
-    <section className="bg-[#FAF6EE] py-12 px-6 sm:px-8 border-t border-[#F3EBDD]/60 max-w-md mx-auto">
-      <div className="border border-[#C5A059]/40 rounded-xl bg-white/70 backdrop-blur-xs p-4 shadow-3xs">
+    // REMOVED max-w-md and mx-auto. Added w-full.
+    <section className="w-full bg-[#FAF6EE] py-12 px-6 sm:px-12 border-t border-[#F3EBDD]/60">
+      <div className="w-full max-w-4xl mx-auto border border-[#C5A059]/30 rounded-2xl bg-white/50 backdrop-blur-sm p-8 shadow-sm">
         <button onClick={() => setIsOpen(!isOpen)} className="w-full flex items-center justify-between cursor-pointer">
-          <div className="flex items-center gap-2">
-            <ShieldCheck className="w-5 h-5 text-[#C5A059]" />
-            <div>
-              <h4 className="font-semibold text-xs uppercase tracking-wider">Organizer Portal</h4>
-            </div>
+          <div className="flex items-center gap-3">
+            <ShieldCheck className="w-6 h-6 text-[#C5A059]" />
+            <h4 className="font-serif text-lg uppercase tracking-widest text-[#2A2825]">Organizer Portal</h4>
           </div>
-          <span className="text-xs text-[#C5A059] font-semibold">{isOpen ? "Collapse" : "Access"}</span>
+          <span className="text-sm text-[#C5A059] font-semibold uppercase">{isOpen ? "Collapse" : "Access Data"}</span>
         </button>
 
         <AnimatePresence>
           {isOpen && (
             <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="overflow-hidden">
-              <div className="pt-4 mt-3 border-t border-[#F3EBDD] space-y-4">
+              <div className="pt-8 mt-6 border-t border-[#F3EBDD]">
                 {!isUnlocked ? (
-                  <form onSubmit={handleLogin} className="space-y-3">
-                    <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full px-3 py-1.5 text-xs rounded-lg border bg-white" />
-                    <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full px-3 py-1.5 text-xs rounded-lg border bg-white" />
-                    <button type="submit" className="w-full py-1.5 bg-[#C5A059] text-white text-xs font-semibold rounded-lg">Login</button>
-                    {authError && <p className="text-[10px] text-red-600">* Invalid credentials.</p>}
+                  <form onSubmit={handleLogin} className="max-w-xs mx-auto space-y-4">
+                    <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full px-4 py-2 text-sm rounded-lg border bg-white" />
+                    <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full px-4 py-2 text-sm rounded-lg border bg-white" />
+                    <button type="submit" className="w-full py-2 bg-[#C5A059] text-white text-sm font-semibold rounded-lg hover:bg-[#b08d4a] transition-colors">Login</button>
+                    {authError && <p className="text-xs text-red-600 text-center">* Invalid credentials.</p>}
                   </form>
                 ) : (
-                  <div className="space-y-4">
-                    <div className="grid grid-cols-3 gap-2 text-center">
-                      <div className="bg-[#EBF0EA] rounded-lg p-2"><Users className="w-4 h-4 mx-auto text-[#5F6F5E]"/><span className="text-xs font-bold block">{totalAttendingGuests}</span></div>
-                      <div className="bg-[#FDFBF7] rounded-lg p-2"><Heart className="w-4 h-4 mx-auto text-[#C5A059]"/><span className="text-xs font-bold block">{accepts.length}</span></div>
-                      <div className="bg-red-50 rounded-lg p-2"><Sparkles className="w-4 h-4 mx-auto text-[#2C261F]/50"/><span className="text-xs font-bold block">{declines.length}</span></div>
-                    </div>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="bg-white/80 rounded-xl p-6 shadow-sm border border-[#F3EBDD]"><Users className="w-6 h-6 mb-2 text-[#5F6F5E]"/><span className="text-xs uppercase tracking-widest text-gray-500 block">Total Guests</span><span className="text-2xl font-serif mt-1 block">{totalAttendingGuests}</span></div>
+                    <div className="bg-white/80 rounded-xl p-6 shadow-sm border border-[#F3EBDD]"><Heart className="w-6 h-6 mb-2 text-[#C5A059]"/><span className="text-xs uppercase tracking-widest text-gray-500 block">Accepted</span><span className="text-2xl font-serif mt-1 block">{accepts.length}</span></div>
+                    <div className="bg-white/80 rounded-xl p-6 shadow-sm border border-[#F3EBDD]"><Sparkles className="w-6 h-6 mb-2 text-[#2C261F]/50"/><span className="text-xs uppercase tracking-widest text-gray-500 block">Declined</span><span className="text-2xl font-serif mt-1 block">{declines.length}</span></div>
                   </div>
                 )}
               </div>
