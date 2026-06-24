@@ -4,19 +4,12 @@ import { RSVPResponse } from "../types";
 import { supabase } from "../supabaseClient";
 import { Users, Heart, Sparkles, ShieldCheck } from "lucide-react";
 
-interface OrganizerDashboardProps {
+interface OrganizerPortalProps {
   tick: number;
   onReset: () => void;
-  uploadUrl: string;
-  onUpdateUploadUrl: (url: string) => void;
 }
 
-export default function OrganizerDashboard({ 
-  tick, 
-  onReset, 
-  uploadUrl, 
-  onUpdateUploadUrl 
-}: OrganizerDashboardProps) {
+export default function OrganizerPortal({ tick, onReset }: OrganizerPortalProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [submss, setSubmss] = useState<RSVPResponse[]>([]);
   const [email, setEmail] = useState("");
@@ -70,7 +63,6 @@ export default function OrganizerDashboard({
   const totalAttendingGuests = accepts.reduce((acc, curr) => acc + (Number(curr.guestsCount) || 1), 0);
 
   return (
-    // REMOVED max-w-md and mx-auto. Added w-full.
     <section className="w-full bg-[#FAF6EE] py-12 px-6 sm:px-12 border-t border-[#F3EBDD]/60">
       <div className="w-full max-w-4xl mx-auto border border-[#C5A059]/30 rounded-2xl bg-white/50 backdrop-blur-sm p-8 shadow-sm">
         <button onClick={() => setIsOpen(!isOpen)} className="w-full flex items-center justify-between cursor-pointer">
