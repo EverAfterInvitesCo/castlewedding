@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import SplashGates from "./components/SplashGates";
+import Reveal from "./components/Reveal"; // Make sure this path is correct based on where you saved Reveal.tsx
 import HeroSection from "./components/HeroSection";
 import CountdownSection from "./components/CountdownSection";
 import OurStory from "./components/OurStory";
@@ -28,14 +29,14 @@ export default function App() {
             transition={{ duration: 1.5, ease: "easeInOut" }}
           >
             <main className="flex-1 w-full flex flex-col">
-              <HeroSection />
-              <CountdownSection />
-              <OurStory />
-              <EventAndTimeline />
-              <CelebrationSchedule />
-              <PhotoGallery />
-              <RSVPForm />
-              <OrganizerPortal />
+              <Reveal><HeroSection /></Reveal>
+              <Reveal><CountdownSection /></Reveal>
+              <Reveal><OurStory /></Reveal>
+              <Reveal><EventAndTimeline /></Reveal>
+              <Reveal><CelebrationSchedule /></Reveal>
+              <Reveal><PhotoGallery /></Reveal>
+              <Reveal><RSVPForm /></Reveal>
+              <Reveal><OrganizerPortal /></Reveal>
             </main>
             <AudioPlayer />
           </motion.div>
