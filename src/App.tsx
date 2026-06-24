@@ -28,18 +28,21 @@ export default function App() {
             exit={{ opacity: 0 }}
             transition={{ duration: 1.5, ease: "easeInOut" }}
           >
-            <main className="flex-1 w-full flex flex-col gap-0">
-              {/* Removed Reveal from HeroSection */}
+            <main className="flex-1 w-full flex flex-col">
               <HeroSection />
               
               <Reveal><CountdownSection /></Reveal>
               <Reveal><OurStory /></Reveal>
               <Reveal><EventAndTimeline /></Reveal>
               <Reveal><CelebrationSchedule /></Reveal>
-              <Reveal><PhotoGallery /></Reveal>
-              <Reveal><RSVPForm /></Reveal>
               
-              {/* Removed Reveal from OrganizerPortal */}
+              {/* RSVP, Photo Upload/Gallery area with reduced spacing */}
+              <div className="space-y-4">
+                <Reveal><RSVPForm /></Reveal>
+                {/* Assuming PhotoUpload is part of or before your PhotoGallery */}
+                <Reveal><PhotoGallery /></Reveal>
+              </div>
+              
               <OrganizerPortal />
             </main>
             
