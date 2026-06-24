@@ -17,9 +17,6 @@ concurrency:
 
 jobs:
   deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -32,7 +29,8 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm install --legacy-peer-deps
+        # Using ci instead of install is faster for CI environments
+        run: npm ci
 
       - name: Build site
         run: npm run build
@@ -40,7 +38,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          name: github-pages # Explicitly naming the artifact
+          name: github-pages
           path: './dist'
 
       - name: Deploy to GitHub Pages
