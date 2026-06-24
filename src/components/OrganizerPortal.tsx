@@ -5,11 +5,11 @@ import { supabase } from "../supabaseClient";
 import { Users, Heart, Sparkles, ShieldCheck } from "lucide-react";
 
 interface OrganizerPortalProps {
-  tick: number;
-  onReset: () => void;
+  tick?: number;
+  onReset?: () => void;
 }
 
-export default function OrganizerPortal({ tick, onReset }: OrganizerPortalProps) {
+export default function OrganizerPortal({ tick = 0, onReset }: OrganizerPortalProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [submss, setSubmss] = useState<RSVPResponse[]>([]);
   const [email, setEmail] = useState("");
@@ -36,11 +36,7 @@ export default function OrganizerPortal({ tick, onReset }: OrganizerPortalProps)
 
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) {
       setAuthError(true);
     } else {
@@ -50,16 +46,8 @@ export default function OrganizerPortal({ tick, onReset }: OrganizerPortalProps)
     }
   };
 
-  const accepts = submss.filter((s) => {
-    const val = String(s.attending).toLowerCase();
-    return val === 'true' || val === 'yes';
-  });
-
-  const declines = submss.filter((s) => {
-    const val = String(s.attending).toLowerCase();
-    return val === 'false' || val === 'no';
-  });
-
+  const accepts = submss.filter((s) => String(s.attending).toLowerCase() === 'true' || String(s.attending).toLowerCase() === 'yes');
+  const declines = submss.filter((s) => String(s.attending).toLowerCase() === 'false' || String(s.attending).toLowerCase() === 'no');
   const totalAttendingGuests = accepts.reduce((acc, curr) => acc + (Number(curr.guestsCount) || 1), 0);
 
   return (
