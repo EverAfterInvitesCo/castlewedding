@@ -29,8 +29,8 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        # Using ci instead of install is faster for CI environments
-        run: npm ci
+        # Changed from npm ci to npm install to avoid lockfile conflicts
+        run: npm install
 
       - name: Build site
         run: npm run build
