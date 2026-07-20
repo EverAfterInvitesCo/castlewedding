@@ -1,7 +1,7 @@
 import { useState, useEffect, FormEvent } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { RSVPResponse } from "../types";
-import { supabase } from "../supabaseClient";
+import { supabase, WEDDING_SLUG } from "../supabaseClient";
 import { Users, Heart, Sparkles, ShieldCheck } from "lucide-react";
 
 interface OrganizerPortalProps {
@@ -18,7 +18,11 @@ export default function OrganizerPortal({ tick = 0, onReset }: OrganizerPortalPr
   const [authError, setAuthError] = useState(false);
 
   const loadSubmissions = async () => {
-    const { data, error } = await supabase.from('rsvps').select('*');
+    const { data, error } = await supabase
+      .from('guests')
+      .select('*')
+      .eq('wedding_slug', WEDDING_SLUG);
+      
     if (error) {
       console.error("Error fetching:", error);
     } else {
