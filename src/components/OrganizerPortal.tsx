@@ -19,7 +19,7 @@ export default function OrganizerPortal({ tick = 0, onReset }: OrganizerPortalPr
 
   const loadSubmissions = async () => {
     const { data, error } = await supabase
-      .from('guests')
+      .from('rsvps')
       .select('*')
       .eq('wedding_slug', WEDDING_SLUG);
       
