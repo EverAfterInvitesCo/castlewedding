@@ -1,5 +1,5 @@
 import { useState, FormEvent } from "react";
-import { supabase } from "../supabaseClient";
+import { supabase, WEDDING_SLUG } from "../supabaseClient";
 import { Heart, Sparkles, AlertCircle, Check } from "lucide-react";
 
 export default function RSVPForm() {
@@ -15,8 +15,9 @@ export default function RSVPForm() {
     e.preventDefault();
     setStatus("submitting");
 
-    const { error } = await supabase.from('rsvps').insert([
+    const { error } = await supabase.from('guests').insert([
       {
+        wedding_slug: WEDDING_SLUG,
         fullName: fullName.trim(),
         email: email.trim(),
         attending: attending === "yes",
