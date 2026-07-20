@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { supabase } from "../supabaseClient";
+import { supabase, WEDDING_SLUG } from "../supabaseClient";
 import { Upload } from "lucide-react";
 
 export default function UploadPhotos() {
@@ -12,19 +12,26 @@ export default function UploadPhotos() {
     if (!file) return;
     setUploading(true);
 
-    // Upload to Supabase Storage
+    // Upload to Supabase Storage with slug prefix
+    const filePath = `${WEDDING_SLUG}/${Date.now()}_${file.name}`;
     const { data, error } = await supabase.storage
       .from('gallery')
-      .upload(`${Date.now()}_${file.name}`, file);
+      .upload(filePath, file);
 
     if (error) {
       console.error("Upload error:", error);
     } else {
-      // Save reference to DB
+      const { data: publicURLData } = supabase.storage
+        .from('gallery')
+        .getPublicUrl(data.path);
+
+      // Save reference to DB with wedding_slug
       await supabase.from('photos').insert([{ 
-        url: data.path, 
+        wedding_slug: WEDDING_SLUG,
+        url: publicURLData.publicUrl || data.path, 
         name, 
-        caption 
+        caption,
+        approved: false 
       }]);
       alert("Photo shared successfully!");
       setFile(null);
@@ -41,6 +48,7 @@ export default function UploadPhotos() {
         <div className="space-y-4">
           <input 
             type="file" 
+            accept="image/*"
             onChange={(e) => setFile(e.target.files?.[0] || null)} 
             className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:bg-[#FAF6EE] file:text-[#C5A059]" 
           />
