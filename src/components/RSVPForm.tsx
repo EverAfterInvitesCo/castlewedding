@@ -15,7 +15,7 @@ export default function RSVPForm() {
     e.preventDefault();
     setStatus("submitting");
 
-    const { error } = await supabase.from('guests').insert([
+    const { error } = await supabase.from('rsvps').insert([
       {
         wedding_slug: WEDDING_SLUG,
         fullName: fullName.trim(),
